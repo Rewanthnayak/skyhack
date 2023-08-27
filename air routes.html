@@ -1,0 +1,155 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 1000px;
+                 height: 700px;
+                 background-color: #222222;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#97c2fc", "font": {"color": "white"}, "id": "AMX", "label": "AMX", "shape": "dot", "size": 2}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "IAX", "label": "IAX", "shape": "dot", "size": 35}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "EWX", "label": "EWX", "shape": "dot", "size": 33}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "ATX", "label": "ATX", "shape": "dot", "size": 2}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "AUX", "label": "AUX", "shape": "dot", "size": 2}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "BCX", "label": "BCX", "shape": "dot", "size": 2}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "BOX", "label": "BOX", "shape": "dot", "size": 5}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "CDX", "label": "CDX", "shape": "dot", "size": 4}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "CLX", "label": "CLX", "shape": "dot", "size": 3}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "CUX", "label": "CUX", "shape": "dot", "size": 1}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "DEX", "label": "DEX", "shape": "dot", "size": 17}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "EDX", "label": "EDX", "shape": "dot", "size": 1}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "EZX", "label": "EZX", "shape": "dot", "size": 1}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "FCX", "label": "FCX", "shape": "dot", "size": 3}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "FLX", "label": "FLX", "shape": "dot", "size": 2}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "FRX", "label": "FRX", "shape": "dot", "size": 2}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "HNX", "label": "HNX", "shape": "dot", "size": 6}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "JAX", "label": "JAX", "shape": "dot", "size": 1}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "LAX", "label": "LAX", "shape": "dot", "size": 8}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "LHX", "label": "LHX", "shape": "dot", "size": 6}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "LIX", "label": "LIX", "shape": "dot", "size": 3}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "MCX", "label": "MCX", "shape": "dot", "size": 4}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "MEX", "label": "MEX", "shape": "dot", "size": 1}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "MSX", "label": "MSX", "shape": "dot", "size": 4}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "ORX", "label": "ORX", "shape": "dot", "size": 19}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "PHX", "label": "PHX", "shape": "dot", "size": 4}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "SAX", "label": "SAX", "shape": "dot", "size": 4}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "SEX", "label": "SEX", "shape": "dot", "size": 4}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "SFX", "label": "SFX", "shape": "dot", "size": 20}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "SJX", "label": "SJX", "shape": "dot", "size": 2}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "LGX", "label": "LGX", "shape": "dot", "size": 3}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "MAX", "label": "MAX", "shape": "dot", "size": 1}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "MIX", "label": "MIX", "shape": "dot", "size": 1}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "MUX", "label": "MUX", "shape": "dot", "size": 1}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "DUX", "label": "DUX", "shape": "dot", "size": 1}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "PBX", "label": "PBX", "shape": "dot", "size": 1}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "SNX", "label": "SNX", "shape": "dot", "size": 1}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "TLX", "label": "TLX", "shape": "dot", "size": 2}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "TPX", "label": "TPX", "shape": "dot", "size": 2}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "GVX", "label": "GVX", "shape": "dot", "size": 1}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "JNX", "label": "JNX", "shape": "dot", "size": 1}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "MXX", "label": "MXX", "shape": "dot", "size": 1}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "NAX", "label": "NAX", "shape": "dot", "size": 1}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "VCX", "label": "VCX", "shape": "dot", "size": 1}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "KOX", "label": "KOX", "shape": "dot", "size": 2}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "GRX", "label": "GRX", "shape": "dot", "size": 1}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "PDX", "label": "PDX", "shape": "dot", "size": 2}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "YVX", "label": "YVX", "shape": "dot", "size": 2}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "OGX", "label": "OGX", "shape": "dot", "size": 2}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "PPX", "label": "PPX", "shape": "dot", "size": 1}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "SIX", "label": "SIX", "shape": "dot", "size": 1}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "SYX", "label": "SYX", "shape": "dot", "size": 1}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "ZRX", "label": "ZRX", "shape": "dot", "size": 1}]);
+                  edges = new vis.DataSet([{"from": "AMX", "mean": 2.5180722891566263, "to": "IAX", "width": 1}, {"from": "AMX", "mean": 2.593220338983051, "to": "EWX", "width": 1}, {"from": "IAX", "mean": 2.9069767441860463, "to": "ATX", "width": 1}, {"from": "IAX", "mean": 3.0545454545454547, "to": "AUX", "width": 1}, {"from": "IAX", "mean": 2.9473684210526314, "to": "BCX", "width": 1}, {"from": "IAX", "mean": 3.108695652173913, "to": "BOX", "width": 1}, {"from": "IAX", "mean": 2.1964285714285716, "to": "CDX", "width": 1}, {"from": "IAX", "mean": 2.7162162162162162, "to": "CLX", "width": 1}, {"from": "IAX", "mean": 3.161290322580645, "to": "CUX", "width": 1}, {"from": "IAX", "mean": 3.0448717948717947, "to": "DEX", "width": 1}, {"from": "IAX", "mean": 3.5686274509803924, "to": "EDX", "width": 1}, {"from": "IAX", "mean": 2.6783216783216783, "to": "EWX", "width": 1}, {"from": "IAX", "mean": 2.8214285714285716, "to": "EZX", "width": 1}, {"from": "IAX", "mean": 2.1296296296296298, "to": "FCX", "width": 1}, {"from": "IAX", "mean": 3.196078431372549, "to": "FLX", "width": 1}, {"from": "IAX", "mean": 2.235955056179775, "to": "FRX", "width": 1}, {"from": "IAX", "mean": 2.315068493150685, "to": "HNX", "width": 1}, {"from": "IAX", "mean": 3.3958333333333335, "to": "IAX", "width": 1}, {"from": "IAX", "mean": 2.9215686274509802, "to": "JAX", "width": 1}, {"from": "IAX", "mean": 3.0686274509803924, "to": "LAX", "width": 1}, {"from": "IAX", "mean": 2.923076923076923, "to": "LHX", "width": 1}, {"from": "IAX", "mean": 3.057471264367816, "to": "LIX", "width": 1}, {"from": "IAX", "mean": 2.7583333333333333, "to": "MCX", "width": 1}, {"from": "IAX", "mean": 2.8493150684931505, "to": "MEX", "width": 1}, {"from": "IAX", "mean": 3.1132075471698113, "to": "MSX", "width": 1}, {"from": "IAX", "mean": 3.03125, "to": "ORX", "width": 1}, {"from": "IAX", "mean": 3.0779220779220777, "to": "PHX", "width": 1}, {"from": "IAX", "mean": 3.1746031746031744, "to": "SAX", "width": 1}, {"from": "IAX", "mean": 2.782178217821782, "to": "SEX", "width": 1}, {"from": "IAX", "mean": 2.6448598130841123, "to": "SFX", "width": 1}, {"from": "IAX", "mean": 3.258426966292135, "to": "SJX", "width": 1}, {"from": "IAX", "mean": 2.9833333333333334, "to": "LGX", "width": 1}, {"from": "IAX", "mean": 3.3214285714285716, "to": "MAX", "width": 1}, {"from": "IAX", "mean": 3.0327868852459017, "to": "MIX", "width": 1}, {"from": "IAX", "mean": 2.9714285714285715, "to": "MUX", "width": 1}, {"from": "ATX", "mean": 2.7395833333333335, "to": "EWX", "width": 1}, {"from": "EWX", "mean": 3.1449275362318843, "to": "AUX", "width": 1}, {"from": "EWX", "mean": 2.712121212121212, "to": "BCX", "width": 1}, {"from": "EWX", "mean": 2.543859649122807, "to": "BOX", "width": 1}, {"from": "EWX", "mean": 2.342857142857143, "to": "CDX", "width": 1}, {"from": "EWX", "mean": 2.669172932330827, "to": "DEX", "width": 1}, {"from": "EWX", "mean": 2.5660377358490565, "to": "DUX", "width": 1}, {"from": "EWX", "mean": 2.983050847457627, "to": "CLX", "width": 1}, {"from": "EWX", "mean": 2.7679558011049723, "to": "FCX", "width": 1}, {"from": "EWX", "mean": 2.0689655172413794, "to": "HNX", "width": 1}, {"from": "EWX", "mean": 2.6160714285714284, "to": "LAX", "width": 1}, {"from": "EWX", "mean": 2.8186528497409324, "to": "LHX", "width": 1}, {"from": "EWX", "mean": 2.7372262773722627, "to": "MCX", "width": 1}, {"from": "EWX", "mean": 3.283333333333333, "to": "MSX", "width": 1}, {"from": "EWX", "mean": 2.4862385321100917, "to": "ORX", "width": 1}, {"from": "EWX", "mean": 3.073170731707317, "to": "PBX", "width": 1}, {"from": "EWX", "mean": 2.8392857142857144, "to": "PHX", "width": 1}, {"from": "EWX", "mean": 2.5494505494505493, "to": "SAX", "width": 1}, {"from": "EWX", "mean": 2.511111111111111, "to": "SEX", "width": 1}, {"from": "EWX", "mean": 2.880658436213992, "to": "SFX", "width": 1}, {"from": "EWX", "mean": 3.0384615384615383, "to": "SJX", "width": 1}, {"from": "EWX", "mean": 2.8823529411764706, "to": "SNX", "width": 1}, {"from": "EWX", "mean": 2.1, "to": "TLX", "width": 1}, {"from": "EWX", "mean": 2.8793103448275863, "to": "TPX", "width": 1}, {"from": "EWX", "mean": 2.986111111111111, "to": "FLX", "width": 1}, {"from": "EWX", "mean": 2.2884615384615383, "to": "GVX", "width": 1}, {"from": "EWX", "mean": 2.5846153846153848, "to": "JNX", "width": 1}, {"from": "EWX", "mean": 3.0405405405405403, "to": "LIX", "width": 1}, {"from": "EWX", "mean": 2.9, "to": "MXX", "width": 1}, {"from": "EWX", "mean": 2.463768115942029, "to": "NAX", "width": 1}, {"from": "EWX", "mean": 3.175438596491228, "to": "VCX", "width": 1}, {"from": "BOX", "mean": 2.8783783783783785, "to": "DEX", "width": 1}, {"from": "BOX", "mean": 3.253731343283582, "to": "ORX", "width": 1}, {"from": "BOX", "mean": 2.68, "to": "SFX", "width": 1}, {"from": "DEX", "mean": 3.2253521126760565, "to": "CLX", "width": 1}, {"from": "DEX", "mean": 2.2238805970149254, "to": "HNX", "width": 1}, {"from": "DEX", "mean": 2.9236641221374047, "to": "LAX", "width": 1}, {"from": "DEX", "mean": 2.6333333333333333, "to": "LGX", "width": 1}, {"from": "DEX", "mean": 2.8421052631578947, "to": "LHX", "width": 1}, {"from": "DEX", "mean": 3.0714285714285716, "to": "MCX", "width": 1}, {"from": "DEX", "mean": 2.9178082191780823, "to": "MSX", "width": 1}, {"from": "DEX", "mean": 3.093167701863354, "to": "ORX", "width": 1}, {"from": "DEX", "mean": 2.9523809523809526, "to": "PHX", "width": 1}, {"from": "DEX", "mean": 3.3780487804878048, "to": "SAX", "width": 1}, {"from": "DEX", "mean": 2.84, "to": "SFX", "width": 1}, {"from": "DEX", "mean": 2.6923076923076925, "to": "KOX", "width": 1}, {"from": "DEX", "mean": 2.8275862068965516, "to": "LIX", "width": 1}, {"from": "DEX", "mean": 3.257142857142857, "to": "SEX", "width": 1}, {"from": "ORX", "mean": 3.014925373134328, "to": "CDX", "width": 1}, {"from": "ORX", "mean": 3.054054054054054, "to": "FCX", "width": 1}, {"from": "ORX", "mean": 2.924731182795699, "to": "HNX", "width": 1}, {"from": "ORX", "mean": 3.0242424242424244, "to": "LAX", "width": 1}, {"from": "ORX", "mean": 2.7419354838709675, "to": "LGX", "width": 1}, {"from": "ORX", "mean": 2.864406779661017, "to": "LHX", "width": 1}, {"from": "ORX", "mean": 3.5121951219512195, "to": "MCX", "width": 1}, {"from": "ORX", "mean": 2.7735849056603774, "to": "MSX", "width": 1}, {"from": "ORX", "mean": 2.8771929824561404, "to": "GRX", "width": 1}, {"from": "ORX", "mean": 3.3653846153846154, "to": "PDX", "width": 1}, {"from": "ORX", "mean": 2.9479166666666665, "to": "PHX", "width": 1}, {"from": "ORX", "mean": 3.1325301204819276, "to": "SAX", "width": 1}, {"from": "ORX", "mean": 2.746153846153846, "to": "SFX", "width": 1}, {"from": "ORX", "mean": 3.087719298245614, "to": "SEX", "width": 1}, {"from": "ORX", "mean": 2.2181818181818183, "to": "YVX", "width": 1}, {"from": "SFX", "mean": 2.6626506024096384, "to": "CDX", "width": 1}, {"from": "SFX", "mean": 2.8943661971830985, "to": "HNX", "width": 1}, {"from": "SFX", "mean": 2.4915254237288136, "to": "KOX", "width": 1}, {"from": "SFX", "mean": 3.0126582278481013, "to": "LAX", "width": 1}, {"from": "SFX", "mean": 2.506666666666667, "to": "LHX", "width": 1}, {"from": "SFX", "mean": 2.8518518518518516, "to": "OGX", "width": 1}, {"from": "SFX", "mean": 2.6666666666666665, "to": "PDX", "width": 1}, {"from": "SFX", "mean": 1.9215686274509804, "to": "PPX", "width": 1}, {"from": "SFX", "mean": 2.858974358974359, "to": "FRX", "width": 1}, {"from": "SFX", "mean": 2.4901960784313726, "to": "SIX", "width": 1}, {"from": "SFX", "mean": 2.324675324675325, "to": "TLX", "width": 1}, {"from": "SFX", "mean": 3.3134328358208953, "to": "TPX", "width": 1}, {"from": "SFX", "mean": 2.9473684210526314, "to": "SYX", "width": 1}, {"from": "SFX", "mean": 2.7017543859649122, "to": "YVX", "width": 1}, {"from": "SFX", "mean": 3.036363636363636, "to": "ZRX", "width": 1}, {"from": "HNX", "mean": 2.676056338028169, "to": "LAX", "width": 1}, {"from": "LAX", "mean": 2.435483870967742, "to": "LHX", "width": 1}, {"from": "LAX", "mean": 2.5961538461538463, "to": "OGX", "width": 1}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
